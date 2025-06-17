@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 
 type Position = { x: number; y: number };
@@ -17,6 +16,23 @@ export const useSnakeGame = () => {
   const [direction, setDirection] = useState<Direction>(INITIAL_DIRECTION);
   const [gameState, setGameState] = useState<GameState>('waiting');
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+
+  // Load high score from localStorage on mount
+  useEffect(() => {
+    const savedHighScore = localStorage.getItem('snakeHighScore');
+    if (savedHighScore) {
+      setHighScore(parseInt(savedHighScore, 10));
+    }
+  }, []);
+
+  // Update high score when game ends
+  useEffect(() => {
+    if (gameState === 'gameOver' && score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('snakeHighScore', score.toString());
+    }
+  }, [gameState, score, highScore]);
 
   const generateFood = useCallback((): Position => {
     let newFood: Position;
@@ -120,6 +136,7 @@ export const useSnakeGame = () => {
     food,
     direction,
     score,
+    highScore,
     gameState,
     startGame,
     pauseGame,

@@ -2,9 +2,9 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { useSnakeGame } from '../hooks/useSnakeGame';
 import { Button } from './ui/button';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Award } from 'lucide-react';
 
-const CANVAS_SIZE = 400;
+const CANVAS_SIZE = 600; // Increased from 400
 const GRID_SIZE = 20;
 
 const SnakeGame = () => {
@@ -14,6 +14,7 @@ const SnakeGame = () => {
     food,
     direction,
     score,
+    highScore,
     gameState,
     startGame,
     pauseGame,
@@ -107,7 +108,13 @@ const SnakeGame = () => {
       <div className="bg-gray-900 rounded-lg p-6 shadow-2xl border border-gray-700">
         <div className="text-center mb-4">
           <h1 className="text-4xl font-bold text-green-400 mb-2">SNAKE GAME</h1>
-          <div className="text-2xl font-mono text-white">Score: {score}</div>
+          <div className="flex justify-center gap-8 text-xl font-mono text-white">
+            <div>Score: {score}</div>
+            <div className="flex items-center gap-2 text-yellow-400">
+              <Award className="w-5 h-5" />
+              High Score: {highScore}
+            </div>
+          </div>
         </div>
 
         <div className="relative mb-4">
@@ -122,7 +129,13 @@ const SnakeGame = () => {
             <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded">
               <div className="text-center">
                 <h2 className="text-3xl font-bold text-red-400 mb-2">GAME OVER</h2>
-                <p className="text-white mb-4">Final Score: {score}</p>
+                <p className="text-white mb-2">Final Score: {score}</p>
+                {score === highScore && score > 0 && (
+                  <p className="text-yellow-400 mb-4 flex items-center justify-center gap-2">
+                    <Award className="w-5 h-5" />
+                    NEW HIGH SCORE!
+                  </p>
+                )}
                 <Button onClick={resetGame} className="bg-green-600 hover:bg-green-700">
                   <RotateCcw className="w-4 h-4 mr-2" />
                   Play Again
