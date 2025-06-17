@@ -185,6 +185,7 @@ const SnakeGame = () => {
         <div className="text-center text-sm text-gray-400">
           <p>Use arrow keys to control the snake</p>
           <p>Press Space to pause/resume</p>
+          <p className="mt-2 text-gray-500 text-xs">Made by calebkg</p>
         </div>
       </div>
     </div>
